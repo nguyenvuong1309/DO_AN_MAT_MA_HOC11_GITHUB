@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bill</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .signature {
+      display: inline-block;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bill</h1>
+
+  <div id="transaction-info">
+    <p>Date: <span id="transaction-date"></span></p>
+    <p>Seller: <span id="seller-name"></span></p>
+    <p>Seller phone: <span id="seller-phone"></span></p>
+    <p>Location: <span id="seller-location"></span></p>
+  </div>
+
+  <div id="shopper-info">
+    <p>Buyer: <span id="buyer-name"></span></p>
+    <p>Buyer phone: <span id="buyer-phone"></span></p>
+    <p>Location: <span id="buyer-location"></span></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="item-list">
+      <!-- Items will be dynamically added here -->
+    </tbody>
+    <tfoot id="bill-summary">
+      <tr>
+        <td colspan="3">Delivery charges:</td>
+        <td id="delivery_charges"></td>
+      </tr>
+      <tr>
+        <td colspan="3">Total:</td>
+        <td id="total"></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div>
+    <div class="signature">
+      <p>Seller's Signature: ______________________</p>
+    </div>
+    <div class="signature">
+      <p>Buyer's Signature: _______________________</p>
+    </div>
+    <div class="signature">
+      <p>Intermediary's Signature: __________________</p>
+    </div>
+  </div>
+</body>
+</html>
