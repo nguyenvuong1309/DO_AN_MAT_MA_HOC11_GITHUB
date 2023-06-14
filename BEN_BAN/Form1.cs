@@ -12,8 +12,6 @@ namespace BEN_NGAN_HANG
 {
     public partial class Form1 : Form
     {
-        Client CLIENT = new Client();
-        Server SERVER = new Server();   
         public Form1()
         {
             InitializeComponent();
@@ -21,18 +19,16 @@ namespace BEN_NGAN_HANG
 
         private void client_Click(object sender, EventArgs e)
         {
-            SERVER.stop_Click(null, EventArgs.Empty);
             this.body.Controls.Clear();
             this.Text = "CLIENT";
-            this.body.Controls.Add(CLIENT);
+            this.body.Controls.Add(new Client());
         }
 
         private void server_Click(object sender, EventArgs e)
         {
-            CLIENT.stop_Click(null, EventArgs.Empty);
             this.body.Controls.Clear();
             this.Text = "SERVER";
-            this.body.Controls.Add(SERVER);
+            this.body.Controls.Add(new Server());
         }
     }
 }

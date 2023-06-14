@@ -13,26 +13,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections.ObjectModel;
-using MongoDB.Driver;
-using iText.Samples.Signatures.Chapter02;
-using BEN_BAN;
-using SharpCompress.Common;
-using static Org.BouncyCastle.Utilities.Test.FixedSecureRandom;
+using System.Linq.Expressions;
 
 namespace BEN_NGAN_HANG
 {
     public partial class Server : UserControl
     {
-        public TcpListener tcpListener;
+        private TcpListener tcpListener;
         private Thread listenThread;
         private List<TcpClient> connectedClients = new List<TcpClient>();
 
-        static MongoClient mongoClient = new MongoClient();
-        static IMongoDatabase db = mongoClient.GetDatabase("contractDB");
-        static IMongoCollection<Contract> collection = db.GetCollection<Contract>("contract");
+        string KEY_STRING = "CE16A8E87AB2C9C7023DED4D69EEFECB838D51ECD4BDCE2B43B94923EF3CB2A9";
+        string IV_STRING = "FA22F0CF07B6F6A3000AA9A77CD7DA4E";
+        string FILE_PATH;
 
-        string FILE_PATH = "";
+
 
         public Server()
         {
@@ -58,7 +53,6 @@ namespace BEN_NGAN_HANG
                 string data = textBox1.Text;
                 if (connectedClients.Count > 0)
                 {
-                    //MessageBox.Show("have client");
                 }
                 else
                 {
@@ -72,7 +66,6 @@ namespace BEN_NGAN_HANG
                     clientStream.Write(buffer, 0, buffer.Length);
                     clientStream.Flush();
 
-                    //MessageBox.Show("Sent data to client: " + data);
                 }
             }
             catch (Exception ex)
@@ -80,25 +73,22 @@ namespace BEN_NGAN_HANG
                 MessageBox.Show(ex.Message);
             }
         }
-        public void stop_Click(object sender, EventArgs e)
+        private void stop_Click(object sender, EventArgs e)
         {
             try
             {
-                if (tcpListener != null)
+                tcpListener.Stop();
+
+                // Close all client connections
+                foreach (TcpClient client in connectedClients)
                 {
-                    tcpListener.Stop();
-
-                    // Close all client connections
-                    foreach (TcpClient client in connectedClients)
-                    {
-                        client.Close();
-                    }
-                    connectedClients.Clear();
-
-                    // Any other necessary cleanup steps
-
-                    MessageBox.Show("Server stopped.");
+                    client.Close();
                 }
+                connectedClients.Clear();
+
+                // Any other necessary cleanup steps
+
+                MessageBox.Show("Server stopped.");
             }
             catch (Exception ex)
             {
@@ -125,7 +115,7 @@ namespace BEN_NGAN_HANG
                 MessageBox.Show(ex.Message);
             }
         }
-        /*private void HandleClientComm(object client)
+        private void HandleClientComm(object client)
         {
             try
             {
@@ -155,13 +145,17 @@ namespace BEN_NGAN_HANG
                     }
 
                     string data = Encoding.ASCII.GetString(message, 0, bytesRead);
+                    //string data = BitConverter.ToString(message).Replace("-", "");
 
 
+                    // Handle the received data here, such as updating UI or sending a response
 
+                    /*// Send a response back to the client
+                    byte[] response = Encoding.ASCII.GetBytes("Message received by server");
+                    clientStream.Write(response, 0, response.Length);
+                    clientStream.Flush();*/
 
-                   
-                    string savePath = "C:\\Users\\ADMIN\\Documents\\MMH\\DO_AN_MAT_MA_HOC_1\\BEN_BAN\\Signature\\test.pdf"; 
-
+                    // Display the received data in the textbox
                     DisplayMessageInTextBox(data);
                 }
 
@@ -171,39 +165,7 @@ namespace BEN_NGAN_HANG
             {
                 MessageBox.Show(ex.Message);
             }
-        }*/
-
-
-        private void HandleClientComm(object client)
-        {
-            try
-            {
-                MessageBox.Show("success");
-                TcpClient tcpClient = (TcpClient)client;
-                NetworkStream clientStream = tcpClient.GetStream();
-                connectedClients.Add(tcpClient);
-
-
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                string savePath = "C:\\Users\\ADMIN\\Documents\\MMH\\DO_AN_MAT_MA_HOC_1\\BEN_BAN\\Signature\\test.pdf";
-                using (FileStream fileStream = File.Create(savePath))
-                {
-                    // Read the incoming data and save it to a file
-                    while ((bytesRead = clientStream.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        fileStream.Write(buffer, 0, bytesRead);
-                    }
-                }
-                DisplayMessageInTextBox("success");
-                tcpClient.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
-
         private void DisplayMessageInTextBox(string message)
         {
             try
@@ -214,10 +176,32 @@ namespace BEN_NGAN_HANG
                 }
                 else
                 {
-                    textBox2.AppendText(message + Environment.NewLine);
+                    textBox2.AppendText(message);
                 }
             }
             catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void save_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string savePath = "..\\..\\Signature\\Contract.pdf";
+                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                string hex = textBox2.Text;
+
+
+                byte[] fileByte = Aes.ConvertStringToByte(hex);
+
+
+                byte[] fileDecrypt = Aes.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
+                File.WriteAllBytes(savePath, fileDecrypt);
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -246,54 +230,21 @@ namespace BEN_NGAN_HANG
             }
         }
 
-        private void upload_to_db_Click(object sender, EventArgs e)
-        {
-            byte[] encryptedText = null;
-            Contract c = new Contract(Convert.ToBase64String(encryptedText));
-            collection.InsertOneAsync(c);
-            MessageBox.Show("Success add data to mongodb");
-        }
-
-        private void get_from_db_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void signpdf_Click(object sender, EventArgs e)
-        {
+        private void get_Click(object sender, EventArgs e)
+        {   
             try
             {
-                CREATE.Create_cert();
+                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                File.ReadAllBytes(FILE_PATH);
+                byte[] fileData = File.ReadAllBytes(FILE_PATH);
+                byte[] FILE_ENCRYPT = Aes.encrypt_Byte(fileData, KEY_BYTE, IV_BYTE);
+                string hex = BitConverter.ToString(FILE_ENCRYPT).Replace("-", "");
+                textBox1.Text = "";
+                textBox1.Text = hex;
+                MessageBox.Show("done");
             }
             catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);    
-            }
-            //SignPdf.Sign();
-        }
-
-        private void send1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (TcpClient client in connectedClients)
-                {
-                    NetworkStream clientStream = client.GetStream();
-                    //MessageBox.Show("Sent data to client: " + data);
-                    using (FileStream fileStream = File.OpenRead(FILE_PATH))
-                    {
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-
-                        // Read the file and send it to the client in chunks
-                        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            clientStream.Write(buffer, 0, bytesRead);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

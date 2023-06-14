@@ -50,11 +50,11 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(278, 3);
+            this.textBox1.Location = new System.Drawing.Point(278, 12);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(298, 52);
+            this.textBox1.Size = new System.Drawing.Size(298, 39);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "BEN_BAN";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

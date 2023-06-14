@@ -1,9 +1,10 @@
-﻿using Org.BouncyCastle.Crypto.Engines;
+﻿using Microsoft.SqlServer.Server;
+using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using System;
-using System.Buffers.Binary;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -156,7 +157,31 @@ namespace BEN_NGAN_HANG
 
             return sR;
         }
+        public static byte[] encrypt_Byte(byte[] byteData, byte[] key, byte[] iv)
+        {
+            byte[] sR = null;
+            try
+            {
+                byte[] plainBytes = byteData;
 
+                GcmBlockCipher cipher = new GcmBlockCipher(new AesFastEngine());
+                AeadParameters parameters = new AeadParameters(new KeyParameter(key), 128, iv, null);
+
+                cipher.Init(true, parameters);
+
+                byte[] encryptedBytes = new byte[cipher.GetOutputSize(plainBytes.Length)];
+                Int32 retLen = cipher.ProcessBytes(plainBytes, 0, plainBytes.Length, encryptedBytes, 0);
+                cipher.DoFinal(encryptedBytes, retLen);
+                sR = encryptedBytes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            return sR;
+        }
 
         public static string decrypt(string EncryptedText, byte[] key, byte[] iv)
         {
@@ -183,6 +208,50 @@ namespace BEN_NGAN_HANG
             }
 
             return sR;
+        }
+
+        public static byte[] decrypt_Byte(byte[] byteData, byte[] key, byte[] iv)
+        {
+            byte[] sR = null;
+            try
+            {
+                byte[] encryptedBytes = byteData;
+
+                GcmBlockCipher cipher = new GcmBlockCipher(new AesFastEngine());
+                AeadParameters parameters = new AeadParameters(new KeyParameter(key), 128, iv, null);
+                //ParametersWithIV parameters = new ParametersWithIV(new KeyParameter(key), iv);
+
+                cipher.Init(false, parameters);
+                byte[] plainBytes = new byte[cipher.GetOutputSize(encryptedBytes.Length)];
+                Int32 retLen = cipher.ProcessBytes(encryptedBytes, 0, encryptedBytes.Length, plainBytes, 0);
+                cipher.DoFinal(plainBytes, retLen);
+
+                sR = plainBytes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            return sR;
+        }
+
+        public static byte[] ConvertStringToByte(string hexString)
+        {
+            byte[] byteArray = new byte[hexString.Length / 2];
+            for (int i = 0; i < byteArray.Length; i++)
+            {
+                byteArray[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            }
+            return byteArray;
+        }
+        public static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
         }
     }
 }
