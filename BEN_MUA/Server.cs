@@ -13,17 +13,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using iText.Samples.Signatures.Chapter02;
+using System.Collections.ObjectModel;
+using MongoDB.Driver;
 
 namespace BEN_NGAN_HANG
 {
     public partial class Server : UserControl
     {
-        string KEY_STRING = "CE16A8E87AB2C9C7023DED4D69EEFECB838D51ECD4BDCE2B43B94923EF3CB2A9";
-        string IV_STRING = "FA22F0CF07B6F6A3000AA9A77CD7DA4E";
+        byte[] KEY_BYTE = new byte[32];
+        byte[] IV_BYTE = new byte[16];
         string FILE_PATH = "";
         private TcpListener tcpListener;
         private Thread listenThread;
         private List<TcpClient> connectedClients = new List<TcpClient>();
+
+
+        static MongoClient mongoClient = new MongoClient();
+        static IMongoDatabase db = mongoClient.GetDatabase("contractDB");
+        static IMongoCollection<Contract> collection = db.GetCollection<Contract>("contract");
+
 
         public Server()
         {
@@ -54,6 +63,9 @@ namespace BEN_NGAN_HANG
                 {
                     MessageBox.Show("don't have client");
                 }
+
+                
+
                 foreach (TcpClient client in connectedClients)
                 {
                     NetworkStream clientStream = client.GetStream();
@@ -114,6 +126,38 @@ namespace BEN_NGAN_HANG
         {
             try
             {
+
+                using (ECDiffieHellmanCng DH = new ECDiffieHellmanCng())
+                {
+                    DH.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
+                    DH.HashAlgorithm = CngAlgorithm.Sha256;
+                    byte[] publicKey_A = DH.PublicKey.ToByteArray();
+
+
+                    TcpListener listener = new TcpListener(IPAddress.Any, 50505);
+                    listener.Start();
+                    TcpClient client_s = listener.AcceptTcpClient();
+                    NetworkStream stream = client_s.GetStream();
+
+                    byte[] publicKey_B = new byte[140];
+                    stream.Read(publicKey_B, 0, publicKey_B.Length);
+
+                    // Gửi phản hồi về client
+                    stream.Write(publicKey_A, 0, publicKey_A.Length);
+
+
+                    Aes aes = new AesCryptoServiceProvider();
+                    byte[] IV = aes.IV;
+                    stream.Write(IV, 0, IV.Length);
+
+                    CngKey bob = CngKey.Import(publicKey_B, CngKeyBlobFormat.EccPublicBlob);
+                    byte[] shared_Key = DH.DeriveKeyMaterial(bob);
+                    client_s.Close();
+                    listener.Stop();
+
+                    IV_BYTE = IV;
+                    KEY_BYTE = shared_Key;
+                }
                 TcpClient tcpClient = (TcpClient)client;
                 NetworkStream clientStream = tcpClient.GetStream();
                 connectedClients.Add(tcpClient);
@@ -182,16 +226,14 @@ namespace BEN_NGAN_HANG
         {
             try
             {
-                string savePath = "..\\..\\Signature\\Contract.pdf";
-                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
-                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                string savePath = "..\\..\\Signature\\contract.pdf";
                 string hex = textBox2.Text;
 
 
-                byte[] fileByte = Aes.ConvertStringToByte(hex);
+                byte[] fileByte = AES.ConvertStringToByte(hex);
 
 
-                byte[] fileDecrypt = Aes.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
+                byte[] fileDecrypt = AES.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
                 File.WriteAllBytes(savePath, fileDecrypt);
             }
             catch(Exception ex)
@@ -227,11 +269,10 @@ namespace BEN_NGAN_HANG
         {
             try
             {
-                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
-                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+
                 File.ReadAllBytes(FILE_PATH);
                 byte[] fileData = File.ReadAllBytes(FILE_PATH);
-                byte[] FILE_ENCRYPT = Aes.encrypt_Byte(fileData, KEY_BYTE, IV_BYTE);
+                byte[] FILE_ENCRYPT = AES.encrypt_Byte(fileData, KEY_BYTE, IV_BYTE);
                 string hex = BitConverter.ToString(FILE_ENCRYPT).Replace("-", "");
                 textBox1.Text = "";
                 textBox1.Text = hex;
@@ -241,6 +282,34 @@ namespace BEN_NGAN_HANG
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        private void Sign_Click(object sender, EventArgs e)
+        {
+            SignPDF.Sign();
+        }
+
+        private void upload_to_db_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                byte[] filePdfByte = File.ReadAllBytes(FILE_PATH);
+                byte[] encryptedText = AES.encrypt_Byte(filePdfByte, KEY_BYTE, IV_BYTE);
+                string hexString = BitConverter.ToString(encryptedText).Replace("-", string.Empty);
+                Contract c = new Contract(hexString);
+                collection.InsertOneAsync(c);
+                MessageBox.Show("Success add data to mongodb");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void Server_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

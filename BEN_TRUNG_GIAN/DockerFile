@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/runtime:5.0 
+
+COPY BEN_TRUNG_GIAN/publish .
+
+ENTRYPOINT ["dotnet",""]

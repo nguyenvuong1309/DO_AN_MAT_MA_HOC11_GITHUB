@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BEN_NGAN_HANG
 {
-    internal class Aes
+    internal class AES
     {
         /*   public static byte[] Aes_Gcm_Encrypt(byte[] toEncrypt, byte[] key, byte[] associatedData = null)
            {
@@ -80,7 +80,7 @@ namespace BEN_NGAN_HANG
         public static readonly int MacBitSize = 128;
         public static readonly int KeyBitSize = 256;
 
-        private Aes() { }
+        private AES() { }
 
         public static byte[] NewKey()
         {

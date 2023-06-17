@@ -39,6 +39,8 @@
             this.port = new System.Windows.Forms.TextBox();
             this.ip = new System.Windows.Forms.TextBox();
             this.pdfViewer1 = new Spire.PdfViewer.Forms.PdfViewer();
+            this.Sign = new System.Windows.Forms.Button();
+            this.upload_to_db = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // save
@@ -147,10 +149,32 @@
             this.pdfViewer1.Threshold = 60;
             this.pdfViewer1.ViewerBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(229)))), ((int)(((byte)(229)))));
             // 
+            // Sign
+            // 
+            this.Sign.Location = new System.Drawing.Point(774, 261);
+            this.Sign.Name = "Sign";
+            this.Sign.Size = new System.Drawing.Size(104, 23);
+            this.Sign.TabIndex = 50;
+            this.Sign.Text = "Sign";
+            this.Sign.UseVisualStyleBackColor = true;
+            this.Sign.Click += new System.EventHandler(this.Sign_Click);
+            // 
+            // upload_to_db
+            // 
+            this.upload_to_db.Location = new System.Drawing.Point(774, 445);
+            this.upload_to_db.Name = "upload_to_db";
+            this.upload_to_db.Size = new System.Drawing.Size(124, 23);
+            this.upload_to_db.TabIndex = 51;
+            this.upload_to_db.Text = "upload_to_db";
+            this.upload_to_db.UseVisualStyleBackColor = true;
+            this.upload_to_db.Click += new System.EventHandler(this.upload_to_db_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.upload_to_db);
+            this.Controls.Add(this.Sign);
             this.Controls.Add(this.pdfViewer1);
             this.Controls.Add(this.save);
             this.Controls.Add(this.choosefile);
@@ -182,5 +206,7 @@
         private System.Windows.Forms.TextBox port;
         private System.Windows.Forms.TextBox ip;
         private Spire.PdfViewer.Forms.PdfViewer pdfViewer1;
+        private System.Windows.Forms.Button Sign;
+        private System.Windows.Forms.Button upload_to_db;
     }
 }

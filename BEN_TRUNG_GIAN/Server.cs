@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -24,7 +26,9 @@ namespace BEN_TRUNG_GIAN
         string IV_STRING = "FA22F0CF07B6F6A3000AA9A77CD7DA4E";
         string FILE_PATH;
 
-
+        static MongoClient mongoClient = new MongoClient();
+        static IMongoDatabase db = mongoClient.GetDatabase("contractDB");
+        static IMongoCollection<Contract> collection = db.GetCollection<Contract>("contract");
 
         public Server()
         {
@@ -233,6 +237,25 @@ namespace BEN_TRUNG_GIAN
                 textBox1.Text = "";
                 textBox1.Text = hex;
                 MessageBox.Show("done");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void upload_to_db_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                byte[] filePdfByte = File.ReadAllBytes(FILE_PATH);
+                byte[] encryptedText = Aes.encrypt_Byte(filePdfByte, KEY_BYTE, IV_BYTE);
+                string hexString = BitConverter.ToString(encryptedText).Replace("-", string.Empty);
+                Contract c = new Contract(hexString);
+                collection.InsertOneAsync(c);
+                MessageBox.Show("Success add data to mongodb");
             }
             catch (Exception ex)
             {

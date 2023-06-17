@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq.Expressions;
+using System.Collections.ObjectModel;
+using MongoDB.Driver;
 
 namespace BEN_NGAN_HANG
 {
@@ -26,6 +28,10 @@ namespace BEN_NGAN_HANG
         string KEY_STRING = "CE16A8E87AB2C9C7023DED4D69EEFECB838D51ECD4BDCE2B43B94923EF3CB2A9";
         string IV_STRING = "FA22F0CF07B6F6A3000AA9A77CD7DA4E";
         string FILE_PATH;
+
+        static MongoClient mongoClient = new MongoClient();
+        static IMongoDatabase db = mongoClient.GetDatabase("contractDB");
+        static IMongoCollection<Contract> collection = db.GetCollection<Contract>("contract");
 
 
 
@@ -190,15 +196,15 @@ namespace BEN_NGAN_HANG
             try
             {
                 string savePath = "..\\..\\Signature\\Contract.pdf";
-                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
-                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                byte[] KEY_BYTE = AES.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = AES.ConvertStringToByte(IV_STRING);
                 string hex = textBox2.Text;
 
 
-                byte[] fileByte = Aes.ConvertStringToByte(hex);
+                byte[] fileByte = AES.ConvertStringToByte(hex);
 
 
-                byte[] fileDecrypt = Aes.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
+                byte[] fileDecrypt = AES.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
                 File.WriteAllBytes(savePath, fileDecrypt);
             }
             catch(Exception ex)
@@ -234,17 +240,36 @@ namespace BEN_NGAN_HANG
         {   
             try
             {
-                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
-                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                byte[] KEY_BYTE = AES.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = AES.ConvertStringToByte(IV_STRING);
                 File.ReadAllBytes(FILE_PATH);
                 byte[] fileData = File.ReadAllBytes(FILE_PATH);
-                byte[] FILE_ENCRYPT = Aes.encrypt_Byte(fileData, KEY_BYTE, IV_BYTE);
+                byte[] FILE_ENCRYPT = AES.encrypt_Byte(fileData, KEY_BYTE, IV_BYTE);
                 string hex = BitConverter.ToString(FILE_ENCRYPT).Replace("-", "");
                 textBox1.Text = "";
                 textBox1.Text = hex;
                 MessageBox.Show("done");
             }
             catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void upload_to_db_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                byte[] KEY_BYTE = AES.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = AES.ConvertStringToByte(IV_STRING);
+                byte[] filePdfByte = File.ReadAllBytes(FILE_PATH);
+                byte[] encryptedText = AES.encrypt_Byte(filePdfByte, KEY_BYTE, IV_BYTE);
+                string hexString = BitConverter.ToString(encryptedText).Replace("-", string.Empty);
+                Contract c = new Contract(hexString);
+                collection.InsertOneAsync(c);
+                MessageBox.Show("Success add data to mongodb");
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

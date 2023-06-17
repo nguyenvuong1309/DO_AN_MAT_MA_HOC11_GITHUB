@@ -39,6 +39,8 @@
             this.get = new System.Windows.Forms.Button();
             this.choosefile = new System.Windows.Forms.Button();
             this.save = new System.Windows.Forms.Button();
+            this.Sign = new System.Windows.Forms.Button();
+            this.upload_to_db = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // stop
@@ -111,7 +113,7 @@
             this.pdfViewer1.MultiPagesThreshold = 60;
             this.pdfViewer1.Name = "pdfViewer1";
             this.pdfViewer1.OnRenderPageExceptionEvent = null;
-            this.pdfViewer1.Size = new System.Drawing.Size(665, 323);
+            this.pdfViewer1.Size = new System.Drawing.Size(744, 323);
             this.pdfViewer1.TabIndex = 14;
             this.pdfViewer1.Text = "pdfViewer1";
             this.pdfViewer1.Threshold = 60;
@@ -129,7 +131,7 @@
             // 
             // choosefile
             // 
-            this.choosefile.Location = new System.Drawing.Point(698, 161);
+            this.choosefile.Location = new System.Drawing.Point(768, 161);
             this.choosefile.Name = "choosefile";
             this.choosefile.Size = new System.Drawing.Size(104, 23);
             this.choosefile.TabIndex = 16;
@@ -147,10 +149,32 @@
             this.save.UseVisualStyleBackColor = true;
             this.save.Click += new System.EventHandler(this.save_Click);
             // 
+            // Sign
+            // 
+            this.Sign.Location = new System.Drawing.Point(768, 232);
+            this.Sign.Name = "Sign";
+            this.Sign.Size = new System.Drawing.Size(104, 23);
+            this.Sign.TabIndex = 18;
+            this.Sign.Text = "Sign";
+            this.Sign.UseVisualStyleBackColor = true;
+            this.Sign.Click += new System.EventHandler(this.Sign_Click);
+            // 
+            // upload_to_db
+            // 
+            this.upload_to_db.Location = new System.Drawing.Point(768, 407);
+            this.upload_to_db.Name = "upload_to_db";
+            this.upload_to_db.Size = new System.Drawing.Size(130, 23);
+            this.upload_to_db.TabIndex = 19;
+            this.upload_to_db.Text = "upload_to_db";
+            this.upload_to_db.UseVisualStyleBackColor = true;
+            this.upload_to_db.Click += new System.EventHandler(this.upload_to_db_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.upload_to_db);
+            this.Controls.Add(this.Sign);
             this.Controls.Add(this.save);
             this.Controls.Add(this.choosefile);
             this.Controls.Add(this.get);
@@ -182,5 +206,7 @@
         private System.Windows.Forms.Button get;
         private System.Windows.Forms.Button choosefile;
         private System.Windows.Forms.Button save;
+        private System.Windows.Forms.Button Sign;
+        private System.Windows.Forms.Button upload_to_db;
     }
 }

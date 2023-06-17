@@ -38,6 +38,7 @@
             this.pdfViewer1 = new Spire.PdfViewer.Forms.PdfViewer();
             this.save = new System.Windows.Forms.Button();
             this.get = new System.Windows.Forms.Button();
+            this.upload_to_db = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox2
@@ -138,10 +139,21 @@
             this.get.UseVisualStyleBackColor = true;
             this.get.Click += new System.EventHandler(this.get_Click);
             // 
+            // upload_to_db
+            // 
+            this.upload_to_db.Location = new System.Drawing.Point(772, 477);
+            this.upload_to_db.Name = "upload_to_db";
+            this.upload_to_db.Size = new System.Drawing.Size(126, 23);
+            this.upload_to_db.TabIndex = 27;
+            this.upload_to_db.Text = "upload_to_db";
+            this.upload_to_db.UseVisualStyleBackColor = true;
+            this.upload_to_db.Click += new System.EventHandler(this.upload_to_db_Click);
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.upload_to_db);
             this.Controls.Add(this.get);
             this.Controls.Add(this.save);
             this.Controls.Add(this.choosefile);
@@ -170,5 +182,6 @@
         private Spire.PdfViewer.Forms.PdfViewer pdfViewer1;
         private System.Windows.Forms.Button save;
         private System.Windows.Forms.Button get;
+        private System.Windows.Forms.Button upload_to_db;
     }
 }

@@ -1,7 +1,11 @@
-﻿using System;
+﻿using iText.Samples.Signatures.Chapter02;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,6 +24,10 @@ namespace BEN_TRUNG_GIAN
         public string FILE_PATH;
         string KEY_STRING = "CE16A8E87AB2C9C7023DED4D69EEFECB838D51ECD4BDCE2B43B94923EF3CB2A9";
         string IV_STRING = "FA22F0CF07B6F6A3000AA9A77CD7DA4E";
+
+        static MongoClient mongoClient = new MongoClient();
+        static IMongoDatabase db = mongoClient.GetDatabase("contractDB");
+        static IMongoCollection<Contract> collection = db.GetCollection<Contract>("contract");
         public Client()
         {
             InitializeComponent();
@@ -161,7 +169,7 @@ namespace BEN_TRUNG_GIAN
         {
             try
             {
-                string savePath = "..\\..\\Signature\\Contract.pdf";
+                string savePath = "..\\..\\Signature\\contract.pdf";
                 byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
                 byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
                 string hex = textBox2.Text;
@@ -172,6 +180,30 @@ namespace BEN_TRUNG_GIAN
 
                 byte[] fileDecrypt = Aes.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
                 File.WriteAllBytes(savePath, fileDecrypt);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Sign_Click(object sender, EventArgs e)
+        {
+            Sign_verify.Sign();
+        }
+
+        private void upload_to_db_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
+                byte[] filePdfByte = File.ReadAllBytes(FILE_PATH);
+                byte[] encryptedText = Aes.encrypt_Byte(filePdfByte, KEY_BYTE, IV_BYTE);
+                string hexString = BitConverter.ToString(encryptedText).Replace("-", string.Empty);
+                Contract c = new Contract(hexString);
+                collection.InsertOneAsync(c);
+                MessageBox.Show("Success add data to mongodb");
             }
             catch (Exception ex)
             {

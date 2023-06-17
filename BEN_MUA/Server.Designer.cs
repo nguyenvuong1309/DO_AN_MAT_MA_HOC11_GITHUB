@@ -38,6 +38,8 @@
             this.pdfViewer1 = new Spire.PdfViewer.Forms.PdfViewer();
             this.choosefile = new System.Windows.Forms.Button();
             this.get = new System.Windows.Forms.Button();
+            this.Sign = new System.Windows.Forms.Button();
+            this.upload_to_db = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox2
@@ -139,10 +141,32 @@
             this.get.UseVisualStyleBackColor = true;
             this.get.Click += new System.EventHandler(this.get_Click);
             // 
+            // Sign
+            // 
+            this.Sign.Location = new System.Drawing.Point(781, 310);
+            this.Sign.Name = "Sign";
+            this.Sign.Size = new System.Drawing.Size(117, 23);
+            this.Sign.TabIndex = 24;
+            this.Sign.Text = "Sign";
+            this.Sign.UseVisualStyleBackColor = true;
+            this.Sign.Click += new System.EventHandler(this.Sign_Click);
+            // 
+            // upload_to_db
+            // 
+            this.upload_to_db.Location = new System.Drawing.Point(781, 489);
+            this.upload_to_db.Name = "upload_to_db";
+            this.upload_to_db.Size = new System.Drawing.Size(117, 23);
+            this.upload_to_db.TabIndex = 25;
+            this.upload_to_db.Text = "upload_to_db";
+            this.upload_to_db.UseVisualStyleBackColor = true;
+            this.upload_to_db.Click += new System.EventHandler(this.upload_to_db_Click);
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.upload_to_db);
+            this.Controls.Add(this.Sign);
             this.Controls.Add(this.get);
             this.Controls.Add(this.choosefile);
             this.Controls.Add(this.pdfViewer1);
@@ -155,6 +179,7 @@
             this.Controls.Add(this.port);
             this.Name = "Server";
             this.Size = new System.Drawing.Size(901, 544);
+            this.Load += new System.EventHandler(this.Server_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,5 +196,7 @@
         private Spire.PdfViewer.Forms.PdfViewer pdfViewer1;
         private System.Windows.Forms.Button choosefile;
         private System.Windows.Forms.Button get;
+        private System.Windows.Forms.Button Sign;
+        private System.Windows.Forms.Button upload_to_db;
     }
 }

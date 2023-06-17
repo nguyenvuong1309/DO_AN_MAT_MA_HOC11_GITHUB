@@ -39,6 +39,9 @@
             this.send = new System.Windows.Forms.Button();
             this.port = new System.Windows.Forms.TextBox();
             this.ip = new System.Windows.Forms.TextBox();
+            this.uploadToDb = new System.Windows.Forms.Button();
+            this.Sign = new System.Windows.Forms.Button();
+            this.Verify = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pdfViewer1
@@ -147,10 +150,43 @@
             this.ip.TabIndex = 29;
             this.ip.Text = "127.0.0.1";
             // 
+            // uploadToDb
+            // 
+            this.uploadToDb.Location = new System.Drawing.Point(785, 461);
+            this.uploadToDb.Name = "uploadToDb";
+            this.uploadToDb.Size = new System.Drawing.Size(116, 23);
+            this.uploadToDb.TabIndex = 40;
+            this.uploadToDb.Text = "upload_to_db";
+            this.uploadToDb.UseVisualStyleBackColor = true;
+            this.uploadToDb.Click += new System.EventHandler(this.uploadToDb_Click);
+            // 
+            // Sign
+            // 
+            this.Sign.Location = new System.Drawing.Point(782, 302);
+            this.Sign.Name = "Sign";
+            this.Sign.Size = new System.Drawing.Size(116, 23);
+            this.Sign.TabIndex = 41;
+            this.Sign.Text = "Sign";
+            this.Sign.UseVisualStyleBackColor = true;
+            this.Sign.Click += new System.EventHandler(this.Sign_Click);
+            // 
+            // Verify
+            // 
+            this.Verify.Location = new System.Drawing.Point(782, 340);
+            this.Verify.Name = "Verify";
+            this.Verify.Size = new System.Drawing.Size(116, 23);
+            this.Verify.TabIndex = 42;
+            this.Verify.Text = "Verify";
+            this.Verify.UseVisualStyleBackColor = true;
+            this.Verify.Click += new System.EventHandler(this.Verify_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.Verify);
+            this.Controls.Add(this.Sign);
+            this.Controls.Add(this.uploadToDb);
             this.Controls.Add(this.pdfViewer1);
             this.Controls.Add(this.save);
             this.Controls.Add(this.choosefile);
@@ -182,5 +218,8 @@
         private System.Windows.Forms.Button send;
         private System.Windows.Forms.TextBox port;
         private System.Windows.Forms.TextBox ip;
+        private System.Windows.Forms.Button uploadToDb;
+        private System.Windows.Forms.Button Sign;
+        private System.Windows.Forms.Button Verify;
     }
 }

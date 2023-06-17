@@ -38,6 +38,7 @@
             this.send = new System.Windows.Forms.Button();
             this.start = new System.Windows.Forms.Button();
             this.port = new System.Windows.Forms.TextBox();
+            this.upload_to_db = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // get
@@ -138,10 +139,21 @@
             this.port.TabIndex = 37;
             this.port.Text = "8080";
             // 
+            // upload_to_db
+            // 
+            this.upload_to_db.Location = new System.Drawing.Point(774, 424);
+            this.upload_to_db.Name = "upload_to_db";
+            this.upload_to_db.Size = new System.Drawing.Size(117, 23);
+            this.upload_to_db.TabIndex = 47;
+            this.upload_to_db.Text = "upload_to_db";
+            this.upload_to_db.UseVisualStyleBackColor = true;
+            this.upload_to_db.Click += new System.EventHandler(this.upload_to_db_Click);
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.upload_to_db);
             this.Controls.Add(this.get);
             this.Controls.Add(this.save);
             this.Controls.Add(this.choosefile);
@@ -171,5 +183,6 @@
         private System.Windows.Forms.Button send;
         private System.Windows.Forms.Button start;
         private System.Windows.Forms.TextBox port;
+        private System.Windows.Forms.Button upload_to_db;
     }
 }
