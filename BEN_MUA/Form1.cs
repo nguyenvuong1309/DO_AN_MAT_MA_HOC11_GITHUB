@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BEN_MUA.Folder;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BEN_NGAN_HANG
+namespace BEN_MUA
 {
     public partial class Form1 : Form
     {

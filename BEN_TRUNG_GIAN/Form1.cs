@@ -16,6 +16,7 @@ namespace BEN_TRUNG_GIAN
         {
             InitializeComponent();
         }
+
         private void client_Click(object sender, EventArgs e)
         {
             this.body.Controls.Clear();

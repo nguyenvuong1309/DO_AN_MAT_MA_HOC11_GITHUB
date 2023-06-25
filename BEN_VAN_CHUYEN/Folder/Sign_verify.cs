@@ -27,15 +27,14 @@ using iText.Layout.Renderer;
 
 
 
-
-namespace BEN_VAN_CHUYEN
+namespace iText.Samples.Signatures.Chapter02
 {
-    public class Sign_Verify
+    public class Sign_verify
     {
-              public static readonly string DEST = "..\\..\\Signature\\";
+        public static readonly string DEST = "..\\..\\Signature\\";
         public static readonly string KEYSTORE = "..\\..\\Signature\\store.p12";
         public static readonly string SRC = "..\\..\\Signature\\contract.pdf";
-        public static readonly char[] PASSWORD = "contract".ToCharArray();
+        public static readonly char[] PASSWORD = "1234".ToCharArray();
         public void createPdf(string baseUri, string html, string dest)
         {
             ConverterProperties properties = new ConverterProperties();
@@ -58,24 +57,24 @@ namespace BEN_VAN_CHUYEN
                 .SetReuseAppearance(false)
                 .SetPageRect(rect)
                 .SetPageNumber(1);
-            signer.SetFieldName("NinjaVan");
-            
+            signer.SetFieldName("Transport");
+
             IExternalSignature pks = new PrivateKeySignature(new PrivateKeyBC(pk), digestAlgorithm);
             // Sign the document using the detached mode, CMS or CAdES equivalent.
             signer.SignDetached(pks, chain, null, null, null, 0, PdfSigner.CryptoStandard.CMS);
 
         }
         public static void Sign()
-        {          
+        {
             Pkcs12Store pk12 = new Pkcs12Store(new FileStream(KEYSTORE, FileMode.Open, FileAccess.Read), PASSWORD);
-            
+
             string alias = null;
             foreach (var a in pk12.Aliases)
             {
-                alias = ((string) a);
+                alias = ((string)a);
                 if (pk12.IsKeyEntry(alias))
                     break;
-            } 
+            }
             ICipherParameters pk = pk12.GetKey(alias).Key;
             X509CertificateEntry[] ce = pk12.GetCertificateChain(alias);
             IX509Certificate[] chain = new IX509Certificate[ce.Length];
@@ -95,11 +94,11 @@ namespace BEN_VAN_CHUYEN
             //     items.Add(item);
             // }
             // string html;
-            Sign_Verify app = new Sign_Verify();
+            Sign_verify app = new Sign_verify();
             /*create_Bill.create_bill(out html, "Nguyen Duc Vuong", "0111111111", "Ho Chi Minh", items);
             app.createPdf(SRC, html, SRC);*/
             app.Sign(SRC, "..\\..\\Signature\\contract_singed.pdf", chain, pk, DigestAlgorithms.SHA256,
-                PdfSigner.CryptoStandard.CMS, "Ok", "NinjaVan");
+                PdfSigner.CryptoStandard.CMS, "Ok", "Transport");
         }
         public bool VerifySignatures(String path)
         {
@@ -119,5 +118,6 @@ namespace BEN_VAN_CHUYEN
             pdfDoc.Close();
             return false;
         }
+
     }
 }

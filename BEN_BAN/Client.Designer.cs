@@ -1,4 +1,4 @@
-﻿namespace BEN_NGAN_HANG
+﻿namespace BEN_BAN
 {
     partial class Client
     {
@@ -35,73 +35,112 @@
             this.send = new System.Windows.Forms.Button();
             this.port = new System.Windows.Forms.TextBox();
             this.ip = new System.Windows.Forms.TextBox();
-            this.pdfViewer1 = new Spire.PdfViewer.Forms.PdfViewer();
-            this.get = new System.Windows.Forms.Button();
-            this.choosefile = new System.Windows.Forms.Button();
-            this.save = new System.Windows.Forms.Button();
+            this.Verify = new System.Windows.Forms.Button();
             this.Sign = new System.Windows.Forms.Button();
-            this.upload_to_db = new System.Windows.Forms.Button();
+            this.uploadToDb = new System.Windows.Forms.Button();
+            this.choosefile = new System.Windows.Forms.Button();
+            this.pdfViewer1 = new Spire.PdfViewer.Forms.PdfViewer();
             this.SuspendLayout();
             // 
             // stop
             // 
-            this.stop.Location = new System.Drawing.Point(430, 78);
+            this.stop.Location = new System.Drawing.Point(395, 78);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(75, 23);
-            this.stop.TabIndex = 13;
+            this.stop.TabIndex = 42;
             this.stop.Text = "stop";
             this.stop.UseVisualStyleBackColor = true;
             this.stop.Click += new System.EventHandler(this.stop_Click);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(563, 96);
+            this.textBox2.Location = new System.Drawing.Point(528, 96);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(148, 22);
-            this.textBox2.TabIndex = 12;
+            this.textBox2.TabIndex = 41;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(563, 57);
+            this.textBox1.Location = new System.Drawing.Point(528, 57);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(148, 22);
-            this.textBox1.TabIndex = 11;
+            this.textBox1.TabIndex = 40;
             // 
             // connect
             // 
-            this.connect.Location = new System.Drawing.Point(430, 31);
+            this.connect.Location = new System.Drawing.Point(395, 31);
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(75, 23);
-            this.connect.TabIndex = 10;
+            this.connect.TabIndex = 39;
             this.connect.Text = "connect";
             this.connect.UseVisualStyleBackColor = true;
             this.connect.Click += new System.EventHandler(this.connect_Click);
             // 
             // send
             // 
-            this.send.Location = new System.Drawing.Point(590, 14);
+            this.send.Location = new System.Drawing.Point(555, 14);
             this.send.Name = "send";
             this.send.Size = new System.Drawing.Size(75, 23);
-            this.send.TabIndex = 9;
+            this.send.TabIndex = 38;
             this.send.Text = "send";
             this.send.UseVisualStyleBackColor = true;
             this.send.Click += new System.EventHandler(this.send_Click);
             // 
             // port
             // 
-            this.port.Location = new System.Drawing.Point(244, 32);
+            this.port.Location = new System.Drawing.Point(209, 32);
             this.port.Name = "port";
             this.port.Size = new System.Drawing.Size(100, 22);
-            this.port.TabIndex = 8;
+            this.port.TabIndex = 37;
             this.port.Text = "8080";
             // 
             // ip
             // 
-            this.ip.Location = new System.Drawing.Point(72, 32);
+            this.ip.Location = new System.Drawing.Point(37, 32);
             this.ip.Name = "ip";
             this.ip.Size = new System.Drawing.Size(143, 22);
-            this.ip.TabIndex = 7;
+            this.ip.TabIndex = 36;
             this.ip.Text = "127.0.0.1";
+            // 
+            // Verify
+            // 
+            this.Verify.Location = new System.Drawing.Point(859, 364);
+            this.Verify.Name = "Verify";
+            this.Verify.Size = new System.Drawing.Size(116, 23);
+            this.Verify.TabIndex = 47;
+            this.Verify.Text = "Verify";
+            this.Verify.UseVisualStyleBackColor = true;
+            this.Verify.Click += new System.EventHandler(this.Verify_Click);
+            // 
+            // Sign
+            // 
+            this.Sign.Location = new System.Drawing.Point(859, 326);
+            this.Sign.Name = "Sign";
+            this.Sign.Size = new System.Drawing.Size(116, 23);
+            this.Sign.TabIndex = 46;
+            this.Sign.Text = "Sign";
+            this.Sign.UseVisualStyleBackColor = true;
+            this.Sign.Click += new System.EventHandler(this.Sign_Click);
+            // 
+            // uploadToDb
+            // 
+            this.uploadToDb.Location = new System.Drawing.Point(862, 485);
+            this.uploadToDb.Name = "uploadToDb";
+            this.uploadToDb.Size = new System.Drawing.Size(116, 23);
+            this.uploadToDb.TabIndex = 45;
+            this.uploadToDb.Text = "upload_to_db";
+            this.uploadToDb.UseVisualStyleBackColor = true;
+            this.uploadToDb.Click += new System.EventHandler(this.uploadToDb_Click);
+            // 
+            // choosefile
+            // 
+            this.choosefile.Location = new System.Drawing.Point(859, 186);
+            this.choosefile.Name = "choosefile";
+            this.choosefile.Size = new System.Drawing.Size(104, 23);
+            this.choosefile.TabIndex = 44;
+            this.choosefile.Text = "choosefile";
+            this.choosefile.UseVisualStyleBackColor = true;
+            this.choosefile.Click += new System.EventHandler(this.choosefile_Click);
             // 
             // pdfViewer1
             // 
@@ -109,76 +148,25 @@
             this.pdfViewer1.FormFillEnabled = false;
             this.pdfViewer1.IgnoreCase = false;
             this.pdfViewer1.IsToolBarVisible = true;
-            this.pdfViewer1.Location = new System.Drawing.Point(18, 140);
+            this.pdfViewer1.Location = new System.Drawing.Point(3, 138);
             this.pdfViewer1.MultiPagesThreshold = 60;
             this.pdfViewer1.Name = "pdfViewer1";
             this.pdfViewer1.OnRenderPageExceptionEvent = null;
-            this.pdfViewer1.Size = new System.Drawing.Size(744, 323);
-            this.pdfViewer1.TabIndex = 14;
+            this.pdfViewer1.Size = new System.Drawing.Size(850, 384);
+            this.pdfViewer1.TabIndex = 48;
             this.pdfViewer1.Text = "pdfViewer1";
             this.pdfViewer1.Threshold = 60;
             this.pdfViewer1.ViewerBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(229)))), ((int)(((byte)(229)))));
-            // 
-            // get
-            // 
-            this.get.Location = new System.Drawing.Point(727, 57);
-            this.get.Name = "get";
-            this.get.Size = new System.Drawing.Size(75, 23);
-            this.get.TabIndex = 15;
-            this.get.Text = "get";
-            this.get.UseVisualStyleBackColor = true;
-            this.get.Click += new System.EventHandler(this.get_Click);
-            // 
-            // choosefile
-            // 
-            this.choosefile.Location = new System.Drawing.Point(768, 161);
-            this.choosefile.Name = "choosefile";
-            this.choosefile.Size = new System.Drawing.Size(104, 23);
-            this.choosefile.TabIndex = 16;
-            this.choosefile.Text = "choosefile";
-            this.choosefile.UseVisualStyleBackColor = true;
-            this.choosefile.Click += new System.EventHandler(this.choosefile_Click);
-            // 
-            // save
-            // 
-            this.save.Location = new System.Drawing.Point(727, 96);
-            this.save.Name = "save";
-            this.save.Size = new System.Drawing.Size(75, 23);
-            this.save.TabIndex = 17;
-            this.save.Text = "save";
-            this.save.UseVisualStyleBackColor = true;
-            this.save.Click += new System.EventHandler(this.save_Click);
-            // 
-            // Sign
-            // 
-            this.Sign.Location = new System.Drawing.Point(768, 232);
-            this.Sign.Name = "Sign";
-            this.Sign.Size = new System.Drawing.Size(104, 23);
-            this.Sign.TabIndex = 18;
-            this.Sign.Text = "Sign";
-            this.Sign.UseVisualStyleBackColor = true;
-            this.Sign.Click += new System.EventHandler(this.Sign_Click);
-            // 
-            // upload_to_db
-            // 
-            this.upload_to_db.Location = new System.Drawing.Point(768, 407);
-            this.upload_to_db.Name = "upload_to_db";
-            this.upload_to_db.Size = new System.Drawing.Size(130, 23);
-            this.upload_to_db.TabIndex = 19;
-            this.upload_to_db.Text = "upload_to_db";
-            this.upload_to_db.UseVisualStyleBackColor = true;
-            this.upload_to_db.Click += new System.EventHandler(this.upload_to_db_Click);
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.upload_to_db);
-            this.Controls.Add(this.Sign);
-            this.Controls.Add(this.save);
-            this.Controls.Add(this.choosefile);
-            this.Controls.Add(this.get);
             this.Controls.Add(this.pdfViewer1);
+            this.Controls.Add(this.Verify);
+            this.Controls.Add(this.Sign);
+            this.Controls.Add(this.uploadToDb);
+            this.Controls.Add(this.choosefile);
             this.Controls.Add(this.stop);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -187,7 +175,7 @@
             this.Controls.Add(this.port);
             this.Controls.Add(this.ip);
             this.Name = "Client";
-            this.Size = new System.Drawing.Size(901, 495);
+            this.Size = new System.Drawing.Size(987, 525);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -202,11 +190,10 @@
         private System.Windows.Forms.Button send;
         private System.Windows.Forms.TextBox port;
         private System.Windows.Forms.TextBox ip;
-        private Spire.PdfViewer.Forms.PdfViewer pdfViewer1;
-        private System.Windows.Forms.Button get;
-        private System.Windows.Forms.Button choosefile;
-        private System.Windows.Forms.Button save;
+        private System.Windows.Forms.Button Verify;
         private System.Windows.Forms.Button Sign;
-        private System.Windows.Forms.Button upload_to_db;
+        private System.Windows.Forms.Button uploadToDb;
+        private System.Windows.Forms.Button choosefile;
+        private Spire.PdfViewer.Forms.PdfViewer pdfViewer1;
     }
 }

@@ -1,0 +1,10 @@
+openssl ecparam -name prime256v1 -genkey -noout -out ec-private-key.pem
+
+openssl ec -in ec-private-key.pem -pubout -out ec-public-key.pem
+
+openssl req -key ec-private-key.pem -new -out ec-temp.csr
+
+openssl pkcs12 -export -in certificate.crt -inkey private.key -out store.p12
+
+
+

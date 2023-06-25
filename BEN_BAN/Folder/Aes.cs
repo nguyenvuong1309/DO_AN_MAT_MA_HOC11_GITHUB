@@ -11,68 +11,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BEN_NGAN_HANG
+namespace BEN_BAN
 {
-    internal class AES
+    internal class Aes
     {
-        /*   public static byte[] Aes_Gcm_Encrypt(byte[] toEncrypt, byte[] key, byte[] associatedData = null)
-           {
-               byte[] tag = new byte[KEY_BYTES];
-               byte[] nonce = new byte[NONCE_BYTES];
-               byte[] cipherText = new byte[toEncrypt.Length];
-
-               using (var cipher = new AesGcm(key))
-               {
-                   cipher.Encrypt(nonce, toEncrypt, cipherText, tag, associatedData);
-
-                   return Concat(tag, Concat(nonce, cipherText));
-               }
-           }
-
-
-           public static byte[] AEes_Gcm_Decrypt(byte[] cipherText, byte[] key, byte[] associatedData = null)
-           {
-               byte[] tag = SubArray(cipherText, 0, KEY_BYTES);
-               byte[] nonce = SubArray(cipherText, KEY_BYTES, NONCE_BYTES);
-
-               byte[] toDecrypt = SubArray(cipherText, KEY_BYTES + NONCE_BYTES, cipherText.Length - tag.Length - nonce.Length);
-               byte[] decryptedData = new byte[toDecrypt.Length];
-
-               using (var cipher = new AesGcm(key))
-               {
-                   cipher.Decrypt(nonce, toDecrypt, tag, decryptedData, associatedData);
-
-                   return decryptedData;
-               }
-           }
-
-           public static byte[] Concat(byte[] a, byte[] b)
-           {
-               byte[] output = new byte[a.Length + b.Length];
-
-               for (int i = 0; i < a.Length; i++)
-               {
-                   output[i] = a[i];
-               }
-
-               for (int j = 0; j < b.Length; j++)
-               {
-                   output[a.Length + j] = b[j];
-               }
-
-               return output;
-           }
-
-           public static byte[] SubArray(byte[] data, int start, int length)
-           {
-               byte[] result = new byte[length];
-
-               Array.Copy(data, start, result, 0, length);
-
-               return result;
-           }
-   */
-
         private static readonly SecureRandom Random = new SecureRandom();
 
         // Pre-configured Encryption Parameters
@@ -80,7 +22,7 @@ namespace BEN_NGAN_HANG
         public static readonly int MacBitSize = 128;
         public static readonly int KeyBitSize = 256;
 
-        private AES() { }
+        private Aes() { }
 
         public static byte[] NewKey()
         {

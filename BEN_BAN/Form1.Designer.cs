@@ -1,4 +1,4 @@
-﻿namespace BEN_NGAN_HANG
+﻿namespace BEN_BAN
 {
     partial class Form1
     {
@@ -44,23 +44,24 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(901, 58);
-            this.panel1.TabIndex = 0;
+            this.panel1.Size = new System.Drawing.Size(1000, 58);
+            this.panel1.TabIndex = 2;
             // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(278, 12);
+            this.textBox1.Location = new System.Drawing.Point(227, 12);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(298, 39);
+            this.textBox1.Size = new System.Drawing.Size(448, 39);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "BEN_BAN";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // server
             // 
+            this.server.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.server.Location = new System.Drawing.Point(123, 12);
             this.server.Name = "server";
             this.server.Size = new System.Drawing.Size(75, 23);
@@ -71,6 +72,7 @@
             // 
             // client
             // 
+            this.client.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.client.Location = new System.Drawing.Point(12, 12);
             this.client.Name = "client";
             this.client.Size = new System.Drawing.Size(75, 23);
@@ -85,14 +87,14 @@
             this.body.Dock = System.Windows.Forms.DockStyle.Fill;
             this.body.Location = new System.Drawing.Point(0, 58);
             this.body.Name = "body";
-            this.body.Size = new System.Drawing.Size(901, 495);
-            this.body.TabIndex = 0;
+            this.body.Size = new System.Drawing.Size(1000, 530);
+            this.body.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 553);
+            this.ClientSize = new System.Drawing.Size(1000, 588);
             this.Controls.Add(this.body);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -105,10 +107,10 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button server;
         private System.Windows.Forms.Button client;
         private System.Windows.Forms.Panel body;
-        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

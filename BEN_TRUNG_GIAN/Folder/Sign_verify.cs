@@ -34,7 +34,7 @@ namespace iText.Samples.Signatures.Chapter02
         public static readonly string DEST = "..\\..\\Signature\\";
         public static readonly string KEYSTORE = "..\\..\\Signature\\store.p12";
         public static readonly string SRC = "..\\..\\Signature\\contract.pdf";
-        public static readonly char[] PASSWORD = "contract".ToCharArray();
+        public static readonly char[] PASSWORD = "1234".ToCharArray();
         public void createPdf(string baseUri, string html, string dest)
         {
             ConverterProperties properties = new ConverterProperties();

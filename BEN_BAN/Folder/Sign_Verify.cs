@@ -9,7 +9,7 @@ using iText.Commons.Bouncycastle.Cert;
 using iText.Bouncycastle.X509;
 using iText.Bouncycastle.Crypto;
 using iText.Html2pdf;
-using BEN_NGAN_HANG;
+using BEN_BAN;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using iText.Bouncycastle.Asn1.Tsp;
@@ -29,12 +29,14 @@ using iText.Layout.Renderer;
 
 namespace iText.Samples.Signatures.Chapter02
 {
-    public class Sign_Verify
+    public class Sign_verify
     {
         public static readonly string DEST = "..\\..\\Signature\\";
         public static readonly string KEYSTORE = "..\\..\\Signature\\store.p12";
         public static readonly string SRC = "..\\..\\Signature\\contract.pdf";
-        public static readonly char[] PASSWORD = "contract".ToCharArray();
+        public static readonly char[] PASSWORD = "1234".ToCharArray();
+        //public static readonly char[] PASSWORD = "contract".ToCharArray();
+
         public void createPdf(string baseUri, string html, string dest)
         {
             ConverterProperties properties = new ConverterProperties();
@@ -82,26 +84,23 @@ namespace iText.Samples.Signatures.Chapter02
             {
                 chain[k] = new X509CertificateBC(ce[k].Certificate);
             }
-            string html = File.ReadAllText("..\\..\\Signature\\contract.html");
-            Create_Bill create_Bill = new Create_Bill();
-            List<Item> items = new List<Item>();
-            for (int i = 0; i < 3; ++i)
-            {
-                Item item = new Item();
-                if (i == 0) item.item = "Áo";
-                if (i == 1) item.item = "Quần";
-                if (i == 2) item.item = "Giày";
-                item.price = 100000;
-                item.quantity = i + 1;
-                items.Add(item);
-            }
-
-
-            Sign_Verify app = new Sign_Verify();
-            create_Bill.create_bill(out html, "Buyer", "0111111111", "Ho Chi Minh", items);
-            app.createPdf(SRC, html, SRC);
+            /*string html = File.ReadAllText("..\\..\\Signature\\contract.html");*/
+            // Create_Bill create_Bill = new Create_Bill();
+            // List<Item> items = new List<Item>();
+            // for (int i = 0; i < 3; ++i)
+            // {
+            //     Item item = new Item();
+            //     item.item = "áo";
+            //     item.price = 100000;
+            //     item.quantity = i + 1;
+            //     items.Add(item);
+            // }
+            // string html;
+            Sign_verify app = new Sign_verify();
+            /*create_Bill.create_bill(out html, "Nguyen Duc Vuong", "0111111111", "Ho Chi Minh", items);
+            app.createPdf(SRC, html, SRC);*/
             app.Sign(SRC, "..\\..\\Signature\\contract_singed.pdf", chain, pk, DigestAlgorithms.SHA256,
-                PdfSigner.CryptoStandard.CMS, "Ok", "Seller");
+                PdfSigner.CryptoStandard.CMS, "Ok", "Seller-parties");
         }
         public bool VerifySignatures(String path)
         {
@@ -111,7 +110,7 @@ namespace iText.Samples.Signatures.Chapter02
 
             foreach (String name in names)
             {
-                if (name == "Intermediary")
+                if (name == "Buyer")
                 {
                     PdfPKCS7 pkcs7 = signUtil.ReadSignatureData(name);
                     if (signUtil.SignatureCoversWholeDocument(name) && pkcs7.VerifySignatureIntegrityAndAuthenticity()) return true;

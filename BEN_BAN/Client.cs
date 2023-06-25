@@ -1,189 +1,197 @@
 ﻿using iText.Samples.Signatures.Chapter02;
 using MongoDB.Driver;
+using Org.BouncyCastle.Asn1.X9;
+using Org.BouncyCastle.Crypto;
 using System;
-using System.Net;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BEN_NGAN_HANG
+namespace BEN_BAN
 {
     public partial class Client : UserControl
     {
-        private TcpClient tcpClient;
-        private NetworkStream clientStream;
         public string FILE_PATH;
-        byte[] KEY_BYTE = new byte[32];
-        byte[] IV_BYTE = new byte[16];
+        string KEY_STRING = "CE16A8E87AB2C9C7023DED4D69EEFECB838D51ECD4BDCE2B43B94923EF3CB2A9";
+        string IV_STRING = "FA22F0CF07B6F6A3000AA9A77CD7DA4E";
 
+        static MongoClient mongoClient = new MongoClient("mongodb+srv://21522809:21522809@cluster0.m7a6l0t.mongodb.net/?retryWrites=true&w=majority");
+        static IMongoCollection<Contract> contractCollection = mongoClient.GetDatabase("Contract").GetCollection<Contract>("Contract");
 
-        static MongoClient mongoClient = new MongoClient();
-        static IMongoDatabase db = mongoClient.GetDatabase("contractDB");
-        static IMongoCollection<Contract> collection = db.GetCollection<Contract>("contract");
-
-
+        private TcpClient client;
+        private SslStream sslStream;
+        private Thread receiveThread;
         public Client()
         {
             InitializeComponent();
         }
+        private void stop_Click(object sender, EventArgs e)
+        {
+            connect.Enabled = true;
+            Disconnect();
+        }
 
         private void connect_Click(object sender, EventArgs e)
         {
-            try
-            {
-                tcpClient = new TcpClient();
-                tcpClient.Connect(ip.Text, Int32.Parse(port.Text));
-                clientStream = tcpClient.GetStream();
-                MessageBox.Show("connect to server");
-                //LogMessage("Connected to server");
+            connect.Enabled = false; // Disable the button while connecting
 
-                // Start a new thread to listen for incoming data from the server
-                Thread receiveThread = new Thread(ReceiveDataFromServer);
-                receiveThread.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                //LogMessage("Error connecting to server: " + ex.Message);
-            }
-        }
-        private void ReceiveDataFromServer()
-        {
-            try
-            {
-                
-                while (true)
-                {
-                    
-                    byte[] buffer = new byte[4096];
-                    int bytesRead = clientStream.Read(buffer, 0, buffer.Length);
-                    string receivedData = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    //LogMessage("Received data from server: " + receivedData);
-
-                    // Display the received data in the textbox
-                    DisplayMessageInTextBox(receivedData);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            // Create a new thread to establish the connection and receive data
+            receiveThread = new Thread(ReceiveData);
+            receiveThread.Start();
         }
 
         private void send_Click(object sender, EventArgs e)
         {
+            string message = textBox1.Text;
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                SendMessage(message);
+                //inputTextBox.Clear();
+            }
+        }
+        private void ReceiveData()
+        {
             try
             {
-                
-                string data = textBox1.Text;
-                byte[] buffer = Encoding.ASCII.GetBytes(data);
-                
-                if (clientStream != null)
+                // Create a TCP client
+                client = new TcpClient(ip.Text, Int32.Parse(port.Text));
+                var stream = client.GetStream();
+
+                // Wrap the stream in an SSL stream and authenticate
+                sslStream = new SslStream(stream, false, new RemoteCertificateValidationCallback(CertificateValidationCallback));
+                sslStream.AuthenticateAsClient("clientName");
+
+                // Continuously receive and display data
+                while (true)
                 {
-                    clientStream.Write(buffer, 0, buffer.Length);
-                    clientStream.Flush();
-
-                    //LogMessage("Sent data to server: " + data);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = sslStream.Read(buffer, 0, buffer.Length);
+                    string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    DisplayMessage(receivedMessage);
                 }
-                else
-                {
-                    MessageBox.Show("not connect to server");
-                }
-
-                /*// Receive a response from the server
-                byte[] response = new byte[4096];
-                int bytesRead = clientStream.Read(response, 0, 4096);
-                string responseData = Encoding.ASCII.GetString(response, 0, bytesRead);
-                MessageBox.Show("Received response from server: " + responseData);
-                //LogMessage("Received response from server: " + responseData);
-
-                // Display the response in the textbox
-                DisplayMessageInTextBox(responseData);*/
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                //LogMessage("Error sending data to server: " + ex.Message);
+                // Handle any exceptions here
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+            finally
+            {
+                Disconnect();
             }
         }
-        private void DisplayMessageInTextBox(string message)
+        private void Disconnect()
+        {
+            sslStream?.Close();
+            client?.Close();
+
+            // Asynchronously join the receiveThread using Task.Run
+            Task.Run(() => receiveThread?.Join()).ConfigureAwait(false);
+
+            // Enable the connect button
+            connect.Enabled = true;
+        }
+        private void DisplayMessage(string message)
         {
             if (textBox2.InvokeRequired)
             {
-                textBox2.Invoke(new Action<string>(DisplayMessageInTextBox), new object[] { message });
+                // Invoke the method on the UI thread
+                Invoke(new Action<string>(DisplayMessage), message);
             }
             else
             {
-                textBox2.AppendText(message);
+                // Append the message to the textbox
+                textBox2.AppendText(message + Environment.NewLine);
             }
         }
-
-        private void stop_Click(object sender, EventArgs e)
+        private static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+        private void SendMessage(string message)
         {
             try
             {
-                tcpClient.Close();
+                byte[] buffer = Encoding.UTF8.GetBytes(message);
+                sslStream.Write(buffer, 0, buffer.Length);
+                sslStream.Flush();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions here
+                MessageBox.Show("An error occurred while sending the message: " + ex.Message);
+            }
+        }
+   
+        private void encrypt_Key()
+        {
+            try
+            {
+                string plainText = "nguyen duc vuong";
+                string cihperText = Encrypt_decrypt_key.encrypt(plainText);
+                string decryptedCipherText = Encrypt_decrypt_key.decrypt(cihperText);
+                MessageBox.Show(decryptedCipherText);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        private void get_Click(object sender, EventArgs e)
-        {
-            try
+          /*  try
             {
-                File.ReadAllBytes(FILE_PATH);
-                byte[] fileData = File.ReadAllBytes(FILE_PATH);
-                using (ECDiffieHellmanCng DH = new ECDiffieHellmanCng())
-                {
-                    DH.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
-                    DH.HashAlgorithm = CngAlgorithm.Sha256;
-                    byte[] publicKey_A = DH.PublicKey.ToByteArray();
+                RSACryptoServiceProvider RSApublicKey = Encrypt_decrypt_key.ImportPublicKey(publicKey);
+
+                RSACryptoServiceProvider RSAprivateKey = Encrypt_decrypt_key.ImportPrivateKey(privateKey);
+
+                var plainTextData = "test simple";
+
+                System.Diagnostics.Debug.WriteLine("plainTextData : " + plainTextData);
+
+                //for encryption, always handle bytes...
+                var bytesPlainTextData = System.Text.Encoding.Unicode.GetBytes(plainTextData);
+
+                //apply pkcs#1.5 padding and encrypt our data 
+                var bytesCypherText = RSApublicKey.Encrypt(bytesPlainTextData, false);
+
+                //we might want a string representation of our cypher text... base64 will do
+                var cypherText = Convert.ToBase64String(bytesCypherText);
+
+                MessageBox.Show("cypherText : " + cypherText);
+                *//*
+                 * some transmission / storage / retrieval
+                 * 
+                 * and we want to decrypt our cypherText
+                 *//*
+
+                //first, get our bytes back from the base64 string ...
+                bytesCypherText = Convert.FromBase64String(cypherText);
+
+                //we want to decrypt, therefore we need a csp and load our private key
 
 
-                    TcpClient client_s = new TcpClient("10.0.129.87", 50505);
-                    NetworkStream stream = client_s.GetStream();
+                //decrypt and strip pkcs#1.5 padding
+                bytesPlainTextData = RSAprivateKey.Decrypt(bytesCypherText, false);
 
-                    stream.Write(publicKey_A, 0, publicKey_A.Length);
+                //get our original plainText back...
+                plainTextData = System.Text.Encoding.Unicode.GetString(bytesPlainTextData);
 
-                    byte[] publicKey_B = new byte[140];
-                    stream.Read(publicKey_B, 0, publicKey_B.Length);
-
-                    byte[] IV = new byte[16];
-                    stream.Read(IV, 0, IV.Length);
-
-                    CngKey bob = CngKey.Import(publicKey_B, CngKeyBlobFormat.EccPublicBlob);
-                    byte[] shared_Key = DH.DeriveKeyMaterial(bob);
-
-                    client_s.Close();
-
-                    IV_BYTE = IV;
-                    KEY_BYTE = shared_Key;
-
-                }
-                byte[] FILE_ENCRYPT = AES.encrypt_Byte(fileData, KEY_BYTE, IV_BYTE);
-                string hex = BitConverter.ToString(FILE_ENCRYPT).Replace("-", "");
-                textBox1.Text = "";
-                textBox1.Text = hex;
-                MessageBox.Show("done");
+                MessageBox.Show("DecryptData : " + plainTextData);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-            }
+                MessageBox.Show("err : " + ex.StackTrace);
+            }*/
         }
 
         private void choosefile_Click(object sender, EventArgs e)
@@ -209,46 +217,40 @@ namespace BEN_NGAN_HANG
             }
         }
 
-        private void save_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string savePath = "..\\..\\Signature\\Contract.pdf";
-                string hex = textBox2.Text;
-
-
-                byte[] fileByte = AES.ConvertStringToByte(hex);
-
-
-                byte[] fileDecrypt = AES.decrypt_Byte(fileByte, KEY_BYTE, IV_BYTE);
-                File.WriteAllBytes(savePath, fileDecrypt);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);    
-            }
-        }
-
         private void Sign_Click(object sender, EventArgs e)
         {
-            Sign_Verify.Sign();
+            Sign_verify.Sign();
         }
 
-        private void upload_to_db_Click(object sender, EventArgs e)
+        private void uploadToDb_Click(object sender, EventArgs e)
         {
             try
             {
+                byte[] KEY_BYTE = Aes.ConvertStringToByte(KEY_STRING);
+                byte[] IV_BYTE = Aes.ConvertStringToByte(IV_STRING);
                 byte[] filePdfByte = File.ReadAllBytes(FILE_PATH);
-                byte[] encryptedText = AES.encrypt_Byte(filePdfByte, KEY_BYTE, IV_BYTE);
+                byte[] encryptedText = Aes.encrypt_Byte(filePdfByte, KEY_BYTE, IV_BYTE);
                 string hexString = BitConverter.ToString(encryptedText).Replace("-", string.Empty);
-                Contract c = new Contract(hexString);
-                collection.InsertOneAsync(c);
+
+                List<string> list = new List<string>();
+                list.Add("ben ban");
+                List<string> arrayKey = new List<string>();
+                arrayKey.Add("key");
+                List<string> arrayIv = new List<string>();
+                arrayIv.Add("iv");
+
+                Contract c = new Contract(hexString,list,DateTime.Now,arrayKey,arrayIv);
+                contractCollection.InsertOne(c);
                 MessageBox.Show("Success add data to mongodb");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void Verify_Click(object sender, EventArgs e)
+        {
 
         }
     }

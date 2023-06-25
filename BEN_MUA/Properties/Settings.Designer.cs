@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BEN_NGAN_HANG.Properties
+namespace BEN_MUA.Properties
 {
 
 

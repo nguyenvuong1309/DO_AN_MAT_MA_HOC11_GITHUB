@@ -16,6 +16,7 @@ namespace BEN_VAN_CHUYEN
         {
             InitializeComponent();
         }
+
         private void client_Click(object sender, EventArgs e)
         {
             this.body.Controls.Clear();

@@ -19081,7 +19081,7 @@
             <param name="baseType">The base type.</param>
             <param name="derivedType">The derived type.</param>
             <param name="derivedTypeSerializer">The derived type serializer.</param>
-            <returns></returns>
+            <returns>A <see cref="T:MongoDB.Bson.Serialization.Serializers.DowncastingSerializer"/> instance.</returns>
         </member>
         <member name="T:MongoDB.Bson.Serialization.Serializers.DowncastingSerializer`2">
             <summary>

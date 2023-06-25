@@ -4544,7 +4544,7 @@
             </summary>
             <param name="connectionMode">The connection mode.</param>
             <param name="connectionModeSwitch">The connection mode switch.</param>
-            <param name="cryptClientSettings">[Beta] Crypt client settings.</param>
+            <param name="cryptClientSettings">Crypt client settings.</param>
             <param name="directConnection">The directConnection.</param>
             <param name="endPoints">The end points.</param>
             <param name="loadBalanced">The load balanced.</param>
@@ -4573,7 +4573,7 @@
         </member>
         <member name="P:MongoDB.Driver.Core.Configuration.ClusterSettings.CryptClientSettings">
             <summary>
-            [Beta] Gets the crypt client settings.
+            Gets the crypt client settings.
             </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Configuration.ClusterSettings.DirectConnection">
@@ -4671,7 +4671,7 @@
             </summary>
             <param name="connectionMode">The connection mode.</param>
             <param name="connectionModeSwitch">The connection mode switch.</param>
-            <param name="cryptClientSettings">[Beta] Crypt client settings.</param>
+            <param name="cryptClientSettings">Crypt client settings.</param>
             <param name="directConnection">The directConnection.</param>
             <param name="endPoints">The end points.</param>
             <param name="loadBalanced">The load balanced.</param>
@@ -5197,7 +5197,7 @@
         </member>
         <member name="T:MongoDB.Driver.Core.Configuration.CryptClientSettings">
             <summary>
-            [Beta] Represents settings for a crypt client.
+            Represents settings for a crypt client.
             </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Configuration.CryptClientSettings.BypassQueryAnalysis">
@@ -6373,6 +6373,11 @@
             Gets the timestamp.
             </summary>
         </member>
+        <member name="T:MongoDB.Driver.Core.Events.ClusterEnteredSelectionQueueEvent">
+            <summary>
+            Occurs when entering selection wait queue.
+            </summary>
+        </member>
         <member name="T:MongoDB.Driver.Core.Events.ClusterOpenedEvent">
             <summary>
             Occurs after a cluster is opened.
@@ -6508,7 +6513,7 @@
             Occurs after a server is selected.
             </summary>
         </member>
-        <member name="M:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent.#ctor(MongoDB.Driver.Core.Clusters.ClusterDescription,MongoDB.Driver.Core.Clusters.ServerSelectors.IServerSelector,MongoDB.Driver.Core.Servers.ServerDescription,System.TimeSpan,System.Nullable{System.Int64})">
+        <member name="M:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent.#ctor(MongoDB.Driver.Core.Clusters.ClusterDescription,MongoDB.Driver.Core.Clusters.ServerSelectors.IServerSelector,MongoDB.Driver.Core.Servers.ServerDescription,System.TimeSpan,System.Nullable{System.Int64},System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent" /> struct.
             </summary>
@@ -6517,6 +6522,7 @@
             <param name="selectedServer">The selected server.</param>
             <param name="duration">The duration of time it took to select the server.</param>
             <param name="operationId">The operation identifier.</param>
+            <param name="operationName">The operation name.</param>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent.ClusterId">
             <summary>
@@ -6536,6 +6542,11 @@
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent.OperationId">
             <summary>
             Gets the operation identifier.
+            </summary>
+        </member>
+        <member name="P:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent.OperationName">
+            <summary>
+            Gets the operation name.
             </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectedServerEvent.ServerSelector">
@@ -6558,13 +6569,14 @@
             Occurs before a server is selected.
             </summary>
         </member>
-        <member name="M:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent.#ctor(MongoDB.Driver.Core.Clusters.ClusterDescription,MongoDB.Driver.Core.Clusters.ServerSelectors.IServerSelector,System.Nullable{System.Int64})">
+        <member name="M:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent.#ctor(MongoDB.Driver.Core.Clusters.ClusterDescription,MongoDB.Driver.Core.Clusters.ServerSelectors.IServerSelector,System.Nullable{System.Int64},System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent" /> struct.
             </summary>
             <param name="clusterDescription">The cluster description.</param>
             <param name="serverSelector">The server selector.</param>
             <param name="operationId">The operation identifier.</param>
+            <param name="operationName">The operation name.</param>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent.ClusterId">
             <summary>
@@ -6579,6 +6591,11 @@
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent.OperationId">
             <summary>
             Gets the operation identifier.
+            </summary>
+        </member>
+        <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent.OperationName">
+            <summary>
+            Gets the operation name.
             </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerEvent.ServerSelector">
@@ -6596,7 +6613,7 @@
             Occurs when selecting a server fails.
             </summary>
         </member>
-        <member name="M:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent.#ctor(MongoDB.Driver.Core.Clusters.ClusterDescription,MongoDB.Driver.Core.Clusters.ServerSelectors.IServerSelector,System.Exception,System.Nullable{System.Int64})">
+        <member name="M:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent.#ctor(MongoDB.Driver.Core.Clusters.ClusterDescription,MongoDB.Driver.Core.Clusters.ServerSelectors.IServerSelector,System.Exception,System.Nullable{System.Int64},System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent" /> struct.
             </summary>
@@ -6604,6 +6621,7 @@
             <param name="serverSelector">The server selector.</param>
             <param name="exception">The exception.</param>
             <param name="operationId">The operation identifier.</param>
+            <param name="operationName">The operation name.</param>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent.ClusterId">
             <summary>
@@ -6623,6 +6641,11 @@
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent.OperationId">
             <summary>
             Gets the operation identifier.
+            </summary>
+        </member>
+        <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent.OperationName">
+            <summary>
+            Gets the operation name.
             </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ClusterSelectingServerFailedEvent.ServerSelector">
@@ -7479,6 +7502,14 @@
             <param name="serverId">The server identifier.</param>
             <param name="connectionPoolSettings">The connection pool settings.</param>
         </member>
+        <member name="M:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent.#ctor(MongoDB.Driver.Core.Servers.ServerId,MongoDB.Driver.Core.Configuration.ConnectionPoolSettings,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent"/> struct.
+            </summary>
+            <param name="serverId">The server identifier.</param>
+            <param name="connectionPoolSettings">The connection pool settings.</param>
+            <param name="closeInUseConnections">Whether in use connections should be closed.</param>
+        </member>
         <member name="M:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent.#ctor(MongoDB.Driver.Core.Servers.ServerId,MongoDB.Driver.Core.Configuration.ConnectionPoolSettings,System.Nullable{MongoDB.Bson.ObjectId})">
             <summary>
             Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent"/> struct.
@@ -7486,6 +7517,20 @@
             <param name="serverId">The server identifier.</param>
             <param name="connectionPoolSettings">The connection pool settings.</param>
             <param name="serviceId">The service identifier.</param>
+        </member>
+        <member name="M:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent.#ctor(MongoDB.Driver.Core.Servers.ServerId,MongoDB.Driver.Core.Configuration.ConnectionPoolSettings,System.Nullable{MongoDB.Bson.ObjectId},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent"/> struct.
+            </summary>
+            <param name="serverId">The server identifier.</param>
+            <param name="connectionPoolSettings">The connection pool settings.</param>
+            <param name="serviceId">The service identifier.</param>
+            <param name="closeInUseConnections">Whether in use connections should be closed.</param>
+        </member>
+        <member name="P:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent.CloseInUseConnections">
+            <summary>
+            Gets a value indicating whether in use connections should be closed.
+            </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ConnectionPoolClearedEvent.ClusterId">
             <summary>
@@ -7524,6 +7569,14 @@
             <param name="serverId">The server identifier.</param>
             <param name="connectionPoolSettings">The connection pool settings.</param>
         </member>
+        <member name="M:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent.#ctor(MongoDB.Driver.Core.Servers.ServerId,MongoDB.Driver.Core.Configuration.ConnectionPoolSettings,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent"/> struct.
+            </summary>
+            <param name="serverId">The server identifier.</param>
+            <param name="connectionPoolSettings">The connection pool settings.</param>
+            <param name="closeInUseConnections">Whether in use connections should be closed.</param>
+        </member>
         <member name="M:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent.#ctor(MongoDB.Driver.Core.Servers.ServerId,MongoDB.Driver.Core.Configuration.ConnectionPoolSettings,System.Nullable{MongoDB.Bson.ObjectId})">
             <summary>
             Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent"/> struct.
@@ -7531,6 +7584,20 @@
             <param name="serverId">The server identifier.</param>
             <param name="connectionPoolSettings">The connection pool settings.</param>
             <param name="serviceId">The service identifier.</param>
+        </member>
+        <member name="M:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent.#ctor(MongoDB.Driver.Core.Servers.ServerId,MongoDB.Driver.Core.Configuration.ConnectionPoolSettings,System.Nullable{MongoDB.Bson.ObjectId},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent"/> struct.
+            </summary>
+            <param name="serverId">The server identifier.</param>
+            <param name="connectionPoolSettings">The connection pool settings.</param>
+            <param name="serviceId">The service identifier.</param>
+            <param name="closeInUseConnections">Whether in use connections should be closed.</param>
+        </member>
+        <member name="P:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent.CloseInUseConnections">
+            <summary>
+            Gets a value indicating whether in use connections should be closed.
+            </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Events.ConnectionPoolClearingEvent.ClusterId">
             <summary>
@@ -9241,6 +9308,11 @@
             Gets the client side field level encryption 2 feature.
             </summary>
         </member>
+        <member name="P:MongoDB.Driver.Core.Misc.Feature.Csfle2QEv2">
+            <summary>
+            Gets the client side field level encryption 2 queryable encryption v2 feature.
+            </summary>
+        </member>
         <member name="P:MongoDB.Driver.Core.Misc.Feature.CurrentOpCommand">
             <summary>
             Gets the current op command feature.
@@ -9269,6 +9341,11 @@
         <member name="P:MongoDB.Driver.Core.Misc.Feature.DirectConnectionSetting">
             <summary>
             Gets the directConnection setting feature.
+            </summary>
+        </member>
+        <member name="P:MongoDB.Driver.Core.Misc.Feature.ElectionIdPriorityInSDAM">
+            <summary>
+            Gets the electionIdPriorityInSDAM feature.
             </summary>
         </member>
         <member name="P:MongoDB.Driver.Core.Misc.Feature.Eval">
@@ -10229,6 +10306,16 @@
         <member name="F:MongoDB.Driver.Core.Misc.WireVersion.Server62">
             <summary>
             Wire version 19.
+            </summary>
+        </member>
+        <member name="F:MongoDB.Driver.Core.Misc.WireVersion.Server63">
+            <summary>
+            Wire version 20.
+            </summary>
+        </member>
+        <member name="F:MongoDB.Driver.Core.Misc.WireVersion.Server70">
+            <summary>
+            Wire version 21.
             </summary>
         </member>
         <member name="T:MongoDB.Driver.Core.Operations.AggregateExplainOperation">

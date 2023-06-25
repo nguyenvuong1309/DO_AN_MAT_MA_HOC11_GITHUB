@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BEN_NGAN_HANG")]
+[assembly: AssemblyTitle("BEN_MUA")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BEN_NGAN_HANG")]
+[assembly: AssemblyProduct("BEN_MUA")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dff1206e-466e-4233-99d0-7dcdc3744548")]
+[assembly: Guid("40b70e7b-c786-4b78-b6a6-b84e0e1adfc9")]
 
 // Version information for an assembly consists of the following four values:
 //

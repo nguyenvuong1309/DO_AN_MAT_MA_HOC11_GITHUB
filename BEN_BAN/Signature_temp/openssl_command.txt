@@ -1,0 +1,26 @@
+openssl genrsa -out rsa-private.txt 1024
+
+
+openssl rsa -in .\rsa-private.txt -out rsa-public.txt -pubout -outform PEM
+
+https://t-phitakgul.medium.com/c-rsa-encryption-decryption-with-my-own-key-dab2d1f4df1b
+
+
+https://gist.github.com/dziwoki/cc41b523c2bd43ee646b957f0aa91943
+
+
+
+tạo khóa ecc
+
+openssl ecparam -name prime256v1 -genkey -noout -out ec-private-key.pem
+openssl ec -in ec-private-key.pem -pubout -out ec-public-key.pem
+openssl req -key ec-private-key.pem -new -out ec-temp.csr
+openssl pkcs12 -export -in certificate.crt -inkey private.key -out store.p12 ( cái này dùng để tạo file pfx).
+
+
+
+
+tạo khóa rsa
+
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl req -new -key private_key.pem -out csr.pem

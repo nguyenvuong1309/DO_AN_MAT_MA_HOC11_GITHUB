@@ -44,8 +44,8 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(901, 58);
-            this.panel1.TabIndex = 1;
+            this.panel1.Size = new System.Drawing.Size(1000, 58);
+            this.panel1.TabIndex = 2;
             // 
             // textBox1
             // 
@@ -85,14 +85,14 @@
             this.body.Dock = System.Windows.Forms.DockStyle.Fill;
             this.body.Location = new System.Drawing.Point(0, 58);
             this.body.Name = "body";
-            this.body.Size = new System.Drawing.Size(901, 495);
-            this.body.TabIndex = 2;
+            this.body.Size = new System.Drawing.Size(1000, 530);
+            this.body.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 553);
+            this.ClientSize = new System.Drawing.Size(1000, 588);
             this.Controls.Add(this.body);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BEN_NGAN_HANG
+namespace BEN_BAN
 {
     public partial class Form1 : Form
     {
@@ -28,7 +28,7 @@ namespace BEN_NGAN_HANG
         {
             this.body.Controls.Clear();
             this.Text = "SERVER";
-            this.body.Controls.Add(new Server());
+            //this.body.Controls.Add(new Server());
         }
     }
 }
